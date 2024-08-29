@@ -1,7 +1,6 @@
-import InputText from "./TerminalTextBox.vue";
+import TerminalTextBox from "./TerminalTextBox.vue";
 
 
 export default {
-    InputTextarea,
-    InputText,
+    TerminalTextBox,
 };
