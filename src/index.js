@@ -5,9 +5,9 @@ const plugin = {
     {
         for (const prop in components)
         {
+            console.log("prop: " + prop);
             if (components.hasOwnProperty(prop))
             {
-                const component = components[prop];
                 Vue.component(component.name, component);
             }
         }
