@@ -1,0 +1,26 @@
+{
+  "name": "vue-terminal-textbox",
+  "version": "1.0.0",
+  "description": "A component for Vue 2 that outputs text slowly like an old CRT terminal",
+  "main": "index.js",
+  "author": "Kertis Henderson <kertishenderson@gmail.com>",
+  "license": "GPL-3.0-or-later",
+  "homepage": "https://github.com/KertDawg/vue-terminal-textbox",
+
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KertDawg/vue-terminal-textbox.git"
+  },
+
+  "bugs": {
+    "url": "https://github.com/KertDawg/vue-terminal-textbox/issues"
+  },
+
+  "peerDependencies": {
+    "vue": "^3.2.21"
+  }
+}
