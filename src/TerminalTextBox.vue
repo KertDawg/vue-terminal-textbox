@@ -23,9 +23,9 @@ export default
             type: Number,
             default: 10,
         },
-        showCursor: {
+        lineCursor: {
             type: Boolean,
-            default: true,
+            default: false,
         },
     },
 
@@ -45,7 +45,6 @@ export default
             CharacterWidth: 12,
             CurrentLineNumber: 0,
             CurrentCharacterInLine: 0,
-            BlockCursor: true,
             CursorX: 0,
             CursorY: 0,
         };
@@ -156,11 +155,11 @@ export default
             var TopY = y - this.LineHeight + 2;
             var Height = this.LineHeight;
 
-            if (!this.BlockCursor)
+            if (this.lineCursor)
             {
                 //  Underline cursor
                 Height = 4;
-                TopY = TopY + Height - Height;
+                TopY = TopY + this.LineHeight - Height;
             }
 
             //  Erase the old cursor.
