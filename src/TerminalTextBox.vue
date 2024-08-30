@@ -1,6 +1,6 @@
 <template>
     <div class="InnerDIV">
-        {{ MainText }}
+        <pre class="TextMonoSpace">{{ MainText }}</pre>
     </div>
 </template>
 
@@ -32,10 +32,11 @@
         {
             return {
                 MainText: "",
-                SlotText: "",  //  This is the text passed in the component's main slot.
+                TotalText: "",  //  This is the text passed in the component's main slot.
                 RefreshInterval: 1000,  //  milliseconds
                 BufferIndex: 0,  //  How many characters have we written so far
                 InnerDIVClasses: "",
+                AreWeCurrentlyWriting: false,
             };
         },
 
@@ -48,7 +49,7 @@
                 {
                     if (this.$slots.default()[0].hasOwnProperty("children") > 0)
                     {
-                        this.SlotText = this.$slots.default()[0].children;
+                        this.TotalText = this.$slots.default()[0].children;
                     }
                 }
             }
@@ -67,17 +68,37 @@
         {
             UpdateText: function()
             {
-                if (this.BufferIndex < this.SlotText.length)
+                console.log("UpdateText()");
+                if (this.BufferIndex < this.TotalText.length)
                 {
                     //  Write the next character.
-                    this.MainText = this.MainText + this.SlotText[this.BufferIndex++];                    
+                    this.MainText = this.MainText + this.TotalText[this.BufferIndex++];                    
 
                     //  Call this method again.
                     setTimeout(() => {
                         this.UpdateText();
                     }, this.RefreshInterval);
                 }
+                else
+                {
+                    //  End the main loop.
+                    this.AreWeCurrentlyWriting = false;
+                }
             },
+
+            //  Write new content to the screen.  This can be called by the parent of the component.
+            Write: function(Content)
+            {
+                console.log("Write()");
+                this.TotalText = this.TotalText + Content;
+
+                if (!this.AreWeCurrentlyWriting)
+                {
+                    //  Start the main loop again.
+                    this.AreWeCurrentlyWriting = true;
+                    this.UpdateText();
+                }
+            }
         },
     }
 </script>
@@ -91,6 +112,12 @@ div.InnerDIV
     color: #7f7f7f;
     width: 100%;
     height: 100%;
+}
+
+pre.TextMonoSpace
+{
+    padding: 0px;
+    margin: 0px;
 }
 
 </style>
