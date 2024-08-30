@@ -47,6 +47,9 @@ export default
             CurrentCharacterInLine: 0,
             CursorX: 0,
             CursorY: 0,
+            ForeColor: "grey",
+            BackColor: "black",
+            InputQueue: [],
         };
     },
     
@@ -113,7 +116,7 @@ export default
                         var CharacterX = this.CharacterWidth * (LocalCharacterInLineIndex + 1);
                         var CharacterY = this.LineHeight * (LocalCurrentLineNumber + 1);
                         this.DrawCursor(CharacterX + this.CharacterWidth, CharacterY);
-                        this.TextArea.fillStyle = "grey";
+                        this.TextArea.fillStyle = this.ForeColor;
                         this.TextArea.font = "24px monospace";
                         this.TextArea.fillText(Line[LocalCharacterInLineIndex], CharacterX, CharacterY);
                         this.CurrentCharacterInLine++;
@@ -132,13 +135,44 @@ export default
             }
 
             this.CurrentLineNumber--;
-            this.AreWeCurrentlyWriting = false;
+
+            //  Is there anything in the queue?
+            if (this.InputQueue.length > 0)
+            {
+                var NextObjectInQueue = this.InputQueue.shift();
+                this.InputQueue
+                this.DoTheActualWrite(NextObjectInQueue.Content, NextObjectInQueue.Color);
+            }
+            else
+            {
+                this.AreWeCurrentlyWriting = false;
+            }
         },
 
         //  Write new content to the screen.  This can be called by the parent of the component.
-        Write: function(Content)
+        Write: function(Content, Color)
+        {
+            this.InputQueue.push({
+                Content: Content,
+                Color: (Color == null) ? "grey" : Color,
+            });
+
+            if (!this.AreWeCurrentlyWriting)
+            {
+                this.AreWeCurrentlyWriting = true;
+                this.MainLoop();
+            }
+        },
+
+        DoTheActualWrite: function (Content, Color)
         {
             this.MainText = this.MainText + Content;
+            this.ForeColor = "grey";
+            
+            if (Color != null)
+            {
+                this.ForeColor = Color;
+            }
 
             if (!this.AreWeCurrentlyWriting)
             {
@@ -163,11 +197,11 @@ export default
             }
 
             //  Erase the old cursor.
-            this.TextArea.fillStyle = "black";
+            this.TextArea.fillStyle = this.BackColor;
             this.TextArea.fillRect(this.CursorX, this.CursorY, Width, Height);
 
             //  Draw the cursor.
-            this.TextArea.fillStyle = "grey";
+            this.TextArea.fillStyle = this.ForeColor;
             this.TextArea.fillRect(LeftX, TopY, Width, Height);
 
             //  Save the cursor position to erase next time.
