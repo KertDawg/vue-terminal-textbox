@@ -45,6 +45,9 @@ export default
             CharacterWidth: 12,
             CurrentLineNumber: 0,
             CurrentCharacterInLine: 0,
+            BlockCursor: true,
+            CursorX: 0,
+            CursorY: 0,
         };
     },
     
@@ -110,6 +113,7 @@ export default
                     {
                         var CharacterX = this.CharacterWidth * (LocalCharacterInLineIndex + 1);
                         var CharacterY = this.LineHeight * (LocalCurrentLineNumber + 1);
+                        this.DrawCursor(CharacterX + this.CharacterWidth, CharacterY);
                         this.TextArea.fillStyle = "grey";
                         this.TextArea.font = "24px monospace";
                         this.TextArea.fillText(Line[LocalCharacterInLineIndex], CharacterX, CharacterY);
@@ -143,6 +147,33 @@ export default
                 this.AreWeCurrentlyWriting = true;
                 this.MainLoop();
             }
+        },
+
+        DrawCursor: function(x, y)
+        {
+            var LeftX = x + 2;
+            var Width = this.CharacterWidth - 2;
+            var TopY = y - this.LineHeight + 2;
+            var Height = this.LineHeight;
+
+            if (!this.BlockCursor)
+            {
+                //  Underline cursor
+                Height = 4;
+                TopY = TopY + Height - Height;
+            }
+
+            //  Erase the old cursor.
+            this.TextArea.fillStyle = "black";
+            this.TextArea.fillRect(this.CursorX, this.CursorY, Width, Height);
+
+            //  Draw the cursor.
+            this.TextArea.fillStyle = "grey";
+            this.TextArea.fillRect(LeftX, TopY, Width, Height);
+
+            //  Save the cursor position to erase next time.
+            this.CursorX = LeftX;
+            this.CursorY = TopY;
         },
     },
 }
