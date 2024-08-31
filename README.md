@@ -33,19 +33,19 @@ The default slot (`<TerminalTextBox>text here</TerminalTextBox`) isn't used yet.
 
 `<TerminalTextBox ref="REFVARIABLE" content-class="CLASSNAME" speed="SPEEDNUMBER" character-size="SIZENUMBER" line-cursor />`
 
-### ref _(optional)_
+#### ref _(optional)_
 This is the ref with which you use the control in a script.
 
-### content-class _(optional)_
+#### content-class _(optional)_
 This is a class string that appends to the internal classes used by the template inside the component.
 
-### speed _(optional)_
+#### speed _(optional)_
 This is how fast the text is drawn.  The higher the number, the faster the output is.  The characters will be drawn one every `1000/SPEEDNUMBER` seconds.  The default is 10.
 
-### character-size _(optional)_
+#### character-size _(optional)_
 This is the height of the characters in pixels.  The width of each character is half of this value on most browsers.
 
-### line-cursor _(optional)_
+#### line-cursor _(optional)_
 If present, the cursor will be an underline.  Without this attribute, it's a block cursor.
 
 
