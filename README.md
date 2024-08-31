@@ -16,7 +16,7 @@ For now, this is distributed a a .vue file.  This should be out into npm in the 
 1. Copy the `src/TerminalTextBox.vue` to your Vue 3 project's `src/components` folder.
 1. Add a component to your page, either by the Vue app initialization or in the page itself:
 
-`import TerminalTextBox from "../src/TerminalTextBox.vue";`
+`import TerminalTextBox from "../components/TerminalTextBox.vue";`
 
 `Vue.component("TerminalTextBox", TerminalTextBox);`
 
