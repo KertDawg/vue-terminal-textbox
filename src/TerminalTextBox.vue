@@ -1,5 +1,5 @@
 <template>
-    <div class="InnerDIV">
+    <div :class="InnerDivClasses" id="InnerDiv">
         <canvas id="TextArea"></canvas>
     </div>
 </template>
@@ -27,6 +27,10 @@ export default
             type: Boolean,
             default: false,
         },
+        characterSize: {
+            type: Number,
+            default: 24,
+        },
     },
 
     data ()
@@ -36,7 +40,9 @@ export default
             Lines: [],
             RefreshInterval: 1000,  //  milliseconds
             BufferIndex: 0,  //  How many characters have we written so far
-            InnerDIVClasses: "",
+            InnerDivClasses: "",
+            InnerDiv: null,
+            Canvas: null,
             AreWeCurrentlyWriting: false,
             TextArea: null,
             CanvasWidth: 0,
@@ -67,16 +73,23 @@ export default
             }
         }
 
+        //  Set the content classes.
+        this.InnerDivClasses = "InnerDiv " + this.contentClass;
+        this.LineHeight = this.characterSize;
+        this.CharacterWidth = this.characterSize / 2;
+
         //  Get the elements.
-        this.TextArea = document.getElementById("TextArea").getContext("2d");
-        this.CanvasWidth = this.TextArea.width;
-        this.CanvasHeight = this.TextArea.height;
+        this.InnerDiv = document.getElementById("InnerDiv");
+        this.Canvas = document.getElementById("TextArea");
+        this.TextArea = this.Canvas.getContext("2d");
+        this.TextArea.clearRect(0, 0, this.TextArea.width, this.TextArea.height);
+        this.Canvas.width = this.InnerDiv.offsetWidth;
+        this.Canvas.height = this.InnerDiv.offsetHeight;
+        this.CanvasWidth = this.InnerDiv.width;
+        this.CanvasHeight = this.InnerDiv.height;
 
         //  Get the timer interval from the speed slot.
         this.RefreshInterval = 1000 / this.speed;
-
-        //  Set the content classes.
-        this.InnerDIVClasses = "InnerDIV " + this.contentClass;
     },
 
     methods:
@@ -97,6 +110,16 @@ export default
         
         DrawText: function()
         {
+            //  Reseze if needed because the canvas doesn't resize properly in mounted() since the div around it isn't fully there yet.
+            //  Do this only once because it will clear the canvas.
+            if (this.Canvas.height != this.InnerDiv.offsetHeight)
+            {
+                this.Canvas.width = this.InnerDiv.offsetWidth;
+                this.Canvas.height = this.InnerDiv.offsetHeight;
+                this.CanvasWidth = this.InnerDiv.width;
+                this.CanvasHeight = this.InnerDiv.height;
+            }
+
             this.Lines = this.MainText.split("\n")
 
             for (var LocalCurrentLineNumber = this.CurrentLineNumber; (LocalCurrentLineNumber < this.Lines.length) && (LocalCurrentLineNumber < this.Lines.length); LocalCurrentLineNumber++)
@@ -117,7 +140,7 @@ export default
                         var CharacterY = this.LineHeight * (LocalCurrentLineNumber + 1);
                         this.DrawCursor(CharacterX + this.CharacterWidth, CharacterY);
                         this.TextArea.fillStyle = this.ForeColor;
-                        this.TextArea.font = "24px monospace";
+                        this.TextArea.font = this.characterSize + "px monospace";
                         this.TextArea.fillText(Line[LocalCharacterInLineIndex], CharacterX, CharacterY);
                         this.CurrentCharacterInLine++;
 
@@ -215,13 +238,13 @@ export default
 
 <style>
 
-div.InnerDIV
+div.InnerDiv
 {
     font-family: 'Courier New', Courier, monospace;
     background-color: #000000;
     color: #7f7f7f;
     width: 100%;
-    height: 100%;
+    height: 90%;
 }
 
 canvas.TextArea
