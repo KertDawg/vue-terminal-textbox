@@ -23,7 +23,7 @@ For now, this is distributed a a .vue file.  This should be out into npm in the 
 
 # Use
 
-The default slot (`<TerminalTextBox>text here</TerminalTextBox`) isn't used yet.  You write text incrementallyas an old terminal.
+The default slot (`<TerminalTextBox>text here</TerminalTextBox`) isn't used yet.  You write text incrementally like an old terminal.
 
 1. Place the component in your page or template: `<TerminalTextbox ref="Terminal" />`
 2. Reference the ref name in your Vue script, and call the `Write(Content, Color)` method on that ref: `this.$refs.Terminal.Write("A line.\n", "red");`
