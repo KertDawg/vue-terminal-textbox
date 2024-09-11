@@ -8,6 +8,11 @@ This is a component that looks like an old text terminal.  It prints out text sl
 ![Screenshot](docs/Screenshot.png)
 
 
+## Demo
+
+Look here for a live demo: https://kertdawg.net/vue-terminal-textbox/
+
+
 ## Setup
 
 For now, this is distributed a a .vue file.  This should be out into npm in the future.
